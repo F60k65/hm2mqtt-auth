@@ -1,8 +1,19 @@
 import * as mqtt from 'mqtt';
+import { loadConfig } from './config';
 import { Device, MqttConfig } from './types';
 import { DeviceManager } from './deviceManager';
 import { publishDiscoveryConfigs } from './generateDiscoveryConfigs';
 import { AdditionalDeviceInfo, BaseDeviceData, getDeviceDefinition } from './deviceDefinition';
+
+const cfg = loadConfig();
+
+const options: mqtt.IClientOptions = {};
+If (cfg.mqttUsername && cfg.mqttPassword) {
+  options.username = cfg.mqttUsername;
+  options.password = cfg.mqttPassword;
+}
+
+Const client = mqtt.connect(cfg.mqttUrl, options);
 
 export class MqttClient {
   private client: mqtt.MqttClient;
